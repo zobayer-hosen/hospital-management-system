@@ -40,4 +40,17 @@ export class AppointmentService {
     await this.appointmentRepo.save(appointment);
     return { message: 'Appointment cancelled successfully' };
   }
+  async getAppointmentById(id: string) {
+    const appointment = await this.appointmentRepo.findOne({
+      where: { id },
+      relations: {
+        patient: { user: true },
+        doctor: { user: true },
+      },
+    });
+    if (!appointment) {
+      throw new NotFoundException('Appointment not found');
+    }
+    return appointment;
+  }
 }

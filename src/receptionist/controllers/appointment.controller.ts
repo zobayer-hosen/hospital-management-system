@@ -11,6 +11,11 @@ export class AppointmentController {
     return this.appointmentService.listAppointments();
   }
 
+  @Get(':id')
+  async getAppointmentById(@Param('id') id: string) {
+    return this.appointmentService.getAppointmentById(id);
+  }
+
   @Patch(':id/status')
   async updateStatus(
     @Param('id') id: string,
