@@ -5,7 +5,6 @@ import * as bcrypt from 'bcrypt';
 import { Receptionist } from '../entities/receptionist.entity';
 import { User } from '../../shared-core/entities/user.entity';
 import { Patient } from '../../patient/entities/patient.entity';
-import { Appointment } from '../entities/appointment.entity';
 import { Role } from '../../shared-core/enums/role.enum';
 import { ReceptionistFormDto } from '../dto/receptionist-form.dto';
 import { UpdatePatientDto } from '../dto/update-patient.dto';

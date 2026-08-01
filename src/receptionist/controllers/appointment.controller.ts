@@ -1,8 +1,14 @@
-import { Controller, Get, Patch, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Get, Patch, Delete, Param, Body, UseGuards } from '@nestjs/common';
 import { AppointmentService } from '../services/appointment.service';
 import { AppointmentStatusDto } from '../dto/appointment-form.dto';
+import { JwtAuthGuard } from '../../shared-core/guards/jwt-auth.guard';
+import { ReceptionistRolesGuard } from '../security/receptionist-roles.guard';
+import { Roles } from '../../shared-core/decorators/roles.decorator';
+import { Role } from '../../shared-core/enums/role.enum';
 
 @Controller('receptionists/appointments')
+@UseGuards(JwtAuthGuard, ReceptionistRolesGuard)
+@Roles(Role.RECEPTIONIST)
 export class AppointmentController {
   constructor(private readonly appointmentService: AppointmentService) {}
 
