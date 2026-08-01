@@ -1,29 +1,26 @@
 import {
-  IsEmail,
-  IsNotEmpty,
   IsOptional,
+  IsString,
   IsDateString,
   IsIn,
-  IsString,
 } from 'class-validator';
 
-export class ReceptionistFormDto {
-  @IsNotEmpty()
+export class UpdatePatientDto {
+  @IsOptional()
   @IsString()
-  name: string;
-
-  @IsEmail()
-  email: string;
+  name?: string;
 
   @IsOptional()
   @IsString()
   phone?: string;
 
+  @IsOptional()
   @IsDateString()
-  dateOfBirth: string;
+  dateOfBirth?: string;
 
+  @IsOptional()
   @IsIn(['MALE', 'FEMALE', 'OTHER'])
-  gender: string;
+  gender?: string;
 
   @IsOptional()
   @IsString()
