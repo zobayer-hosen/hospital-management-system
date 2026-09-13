@@ -88,24 +88,24 @@ export default function RegisterPage() {
 
   return (
     <div className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-xl bg-white p-8 sm:p-10 rounded-3xl border border-slate-200 shadow-md">
-        <div className="text-center mb-8">
-          <div className="w-12 h-12 mx-auto rounded-2xl bg-cyan-600 text-white flex items-center justify-center font-bold text-2xl mb-3 shadow-md">
+      <div className="w-full max-w-xl bg-white p-6 sm:p-8 rounded border border-gray-300">
+        <div className="text-center mb-6">
+          <div className="w-10 h-10 mx-auto rounded bg-blue-600 text-white flex items-center justify-center font-bold text-xl mb-2">
             +
           </div>
-          <h2 className="text-2xl font-bold text-slate-900">Patient Registration</h2>
-          <p className="text-xs text-slate-500 mt-1">Create your hospital medical profile and account</p>
+          <h2 className="text-2xl font-bold text-gray-900">Patient Registration</h2>
+          <p className="text-xs text-gray-500 mt-1">Create your hospital medical profile and account</p>
         </div>
 
         {error && (
-          <div className="mb-5 p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
+          <div className="mb-4 p-3 rounded bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
             <span>⚠️</span>
             <span>{error}</span>
           </div>
         )}
 
         {successMessage && (
-          <div className="mb-5 p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs flex items-center gap-2">
+          <div className="mb-4 p-3 rounded bg-green-50 border border-green-200 text-green-700 text-xs flex items-center gap-2">
             <span>✅</span>
             <span>{successMessage}</span>
           </div>
@@ -114,7 +114,7 @@ export default function RegisterPage() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
                 Full Name *
               </label>
               <input
@@ -122,12 +122,12 @@ export default function RegisterPage() {
                 placeholder="e.g. Rahim Ahmed"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-blue-600"
+                className="w-full px-3 py-2 rounded border border-gray-300 text-sm focus:outline-none focus:border-blue-600"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
                 Email Address *
               </label>
               <input
@@ -135,14 +135,14 @@ export default function RegisterPage() {
                 placeholder="rahim@example.com"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-blue-600"
+                className="w-full px-3 py-2 rounded border border-gray-300 text-sm focus:outline-none focus:border-blue-600"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
                 Password *
               </label>
               <input
@@ -150,12 +150,12 @@ export default function RegisterPage() {
                 placeholder="Min. 6 characters"
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-blue-600"
+                className="w-full px-3 py-2 rounded border border-gray-300 text-sm focus:outline-none focus:border-blue-600"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
                 Phone Number
               </label>
               <input
@@ -163,32 +163,32 @@ export default function RegisterPage() {
                 placeholder="+8801700000000"
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-blue-600"
+                className="w-full px-3 py-2 rounded border border-gray-300 text-sm focus:outline-none focus:border-blue-600"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
                 Date of Birth
               </label>
               <input
                 type="date"
                 value={formData.dateOfBirth}
                 onChange={(e) => setFormData({ ...formData, dateOfBirth: e.target.value })}
-                className="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-blue-600"
+                className="w-full px-3 py-2 rounded border border-gray-300 text-sm focus:outline-none focus:border-blue-600"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
                 Gender
               </label>
               <select
                 value={formData.gender}
                 onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
-                className="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-blue-600 bg-white"
+                className="w-full px-3 py-2 rounded border border-gray-300 text-sm focus:outline-none focus:border-blue-600 bg-white"
               >
                 <option value="">Select Gender</option>
                 <option value="male">Male</option>
@@ -198,13 +198,13 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
                 Blood Group
               </label>
               <select
                 value={formData.bloodGroup}
                 onChange={(e) => setFormData({ ...formData, bloodGroup: e.target.value })}
-                className="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-blue-600 bg-white"
+                className="w-full px-3 py-2 rounded border border-gray-300 text-sm focus:outline-none focus:border-blue-600 bg-white"
               >
                 <option value="">Select Group</option>
                 <option value="A+">A+</option>
@@ -220,7 +220,7 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
+            <label className="block text-xs font-semibold text-gray-700 mb-1">
               Address / Residential City
             </label>
             <input
@@ -228,29 +228,22 @@ export default function RegisterPage() {
               placeholder="e.g. Dhanmondi, Dhaka"
               value={formData.address}
               onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-blue-600"
+              className="w-full px-3 py-2 rounded border border-gray-300 text-sm focus:outline-none focus:border-blue-600"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold text-sm shadow-sm transition-all flex items-center justify-center gap-2 mt-4"
+            className="w-full py-2.5 px-4 rounded bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-medium text-sm transition-colors mt-4"
           >
-            {loading ? (
-              <>
-                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                Creating Profile...
-              </>
-            ) : (
-              "Complete Registration"
-            )}
+            {loading ? "Creating Profile..." : "Complete Registration"}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-xs text-slate-500">
+        <p className="mt-6 text-center text-xs text-gray-500">
           Already have an account?{" "}
-          <Link href="/login" className="text-blue-600 font-semibold hover:underline">
+          <Link href="/login" className="text-blue-600 font-medium hover:underline">
             Sign In
           </Link>
         </p>

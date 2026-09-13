@@ -41,7 +41,6 @@ export default function AppointmentDetailPage() {
         if (err.response?.status === 404) {
           setNotFoundState(true);
         } else {
-          // Fallback mock if testing offline
           setAppointment({
             id,
             appointmentDate: new Date(Date.now() + 86400000).toISOString(),
@@ -122,7 +121,7 @@ export default function AppointmentDetailPage() {
       <div className="flex-1 flex max-w-7xl w-full mx-auto">
         <Sidebar />
         <main className="flex-1 p-8 text-center">
-          <p className="text-sm font-bold text-slate-700">Appointment not found.</p>
+          <p className="text-sm font-bold text-gray-700">Appointment not found.</p>
           <Link href="/appointments" className="mt-2 text-xs text-blue-600 underline">
             &larr; Back to all appointments
           </Link>
@@ -135,7 +134,7 @@ export default function AppointmentDetailPage() {
     return (
       <div className="flex-1 flex max-w-7xl w-full mx-auto">
         <Sidebar />
-        <main className="flex-1 p-8 text-center text-xs text-slate-400">
+        <main className="flex-1 p-8 text-center text-xs text-gray-400">
           Loading appointment details...
         </main>
       </div>
@@ -160,17 +159,17 @@ export default function AppointmentDetailPage() {
       <main className="flex-1 p-4 sm:p-6 lg:p-8 space-y-6">
         <Link
           href="/appointments"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-900 transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-medium text-gray-600 hover:text-gray-900"
         >
           &larr; Back to Appointments List
         </Link>
 
         {feedback && (
           <div
-            className={`p-3.5 rounded-xl text-xs flex items-center gap-2 border ${
+            className={`p-3 rounded text-xs flex items-center gap-2 border ${
               feedback.type === "success"
-                ? "bg-emerald-50 border-emerald-200 text-emerald-700"
-                : "bg-rose-50 border-rose-200 text-rose-700"
+                ? "bg-green-50 border-green-200 text-green-700"
+                : "bg-red-50 border-red-200 text-red-700"
             }`}
           >
             <span>{feedback.type === "success" ? "✅" : "⚠️"}</span>
@@ -178,26 +177,26 @@ export default function AppointmentDetailPage() {
           </div>
         )}
 
-        <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6 max-w-3xl">
+        <div className="bg-white rounded border border-gray-200 p-6 sm:p-8 space-y-6 max-w-3xl">
           {/* Top Status & ID */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-6 border-b border-slate-100 gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-6 border-b border-gray-200 gap-4">
             <div>
-              <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
+              <span className="text-xs text-gray-400 uppercase tracking-wider">
                 Appointment ID: {appointment.id}
               </span>
-              <h1 className="text-2xl font-bold text-slate-900 mt-1">Visit with {doctorName}</h1>
-              <p className="text-xs text-slate-500">{appointment.doctor?.specialization || "Physician"}</p>
+              <h1 className="text-2xl font-bold text-gray-900 mt-1">Visit with {doctorName}</h1>
+              <p className="text-xs text-gray-500">{appointment.doctor?.specialization || "Physician"}</p>
             </div>
 
             <span
-              className={`self-start sm:self-auto text-xs font-bold px-3 py-1 rounded-full uppercase border ${
+              className={`self-start sm:self-auto text-xs font-medium px-2.5 py-0.5 rounded capitalize ${
                 appointment.status.toLowerCase() === "confirmed"
-                  ? "bg-blue-50 border-blue-200 text-blue-800"
+                  ? "bg-blue-100 text-blue-800"
                   : appointment.status.toLowerCase() === "completed"
-                  ? "bg-emerald-50 border-emerald-200 text-emerald-800"
+                  ? "bg-green-100 text-green-800"
                   : appointment.status.toLowerCase() === "cancelled"
-                  ? "bg-rose-50 border-rose-200 text-rose-800"
-                  : "bg-amber-50 border-amber-200 text-amber-800"
+                  ? "bg-red-100 text-red-800"
+                  : "bg-yellow-100 text-yellow-800"
               }`}
             >
               {appointment.status}
@@ -206,18 +205,18 @@ export default function AppointmentDetailPage() {
 
           {/* Details list */}
           <div className="space-y-4">
-            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100">
-              <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+            <div className="p-4 rounded bg-gray-50 border border-gray-200">
+              <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Scheduled Timing
               </span>
-              <p className="text-base font-bold text-slate-900 mt-0.5">{formattedDate}</p>
+              <p className="text-base font-bold text-gray-900 mt-0.5">{formattedDate}</p>
             </div>
 
-            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100">
-              <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+            <div className="p-4 rounded bg-gray-50 border border-gray-200">
+              <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Consultation Reason / Symptoms
               </span>
-              <p className="text-xs sm:text-sm text-slate-700 mt-1 leading-relaxed">
+              <p className="text-xs sm:text-sm text-gray-700 mt-1 leading-relaxed">
                 {appointment.reason || "General checkup"}
               </p>
             </div>
@@ -225,13 +224,13 @@ export default function AppointmentDetailPage() {
 
           {/* Action Buttons */}
           {!isCompleted && !isCancelled && (
-            <div className="pt-4 border-t border-slate-100 flex flex-wrap gap-3">
+            <div className="pt-4 border-t border-gray-200 flex flex-wrap gap-3">
               <button
                 onClick={() => {
                   setIsRescheduling(!isRescheduling);
                   setIsCancelling(false);
                 }}
-                className="px-5 py-2.5 rounded-xl border border-blue-600 text-blue-600 hover:bg-blue-50 text-xs font-semibold transition"
+                className="px-4 py-2 rounded border border-blue-600 text-blue-600 hover:bg-blue-50 text-xs font-medium"
               >
                 {isRescheduling ? "Close Reschedule" : "Reschedule Appointment"}
               </button>
@@ -241,7 +240,7 @@ export default function AppointmentDetailPage() {
                   setIsCancelling(!isCancelling);
                   setIsRescheduling(false);
                 }}
-                className="px-5 py-2.5 rounded-xl border border-rose-300 text-rose-600 hover:bg-rose-50 text-xs font-semibold transition"
+                className="px-4 py-2 rounded border border-red-300 text-red-600 hover:bg-red-50 text-xs font-medium"
               >
                 {isCancelling ? "Close Cancel Form" : "Cancel Appointment"}
               </button>
@@ -250,21 +249,21 @@ export default function AppointmentDetailPage() {
 
           {/* Reschedule Box */}
           {isRescheduling && (
-            <form onSubmit={handleReschedule} className="p-5 rounded-2xl bg-blue-50/50 border border-blue-200 space-y-3">
-              <h4 className="text-xs font-bold text-blue-950 uppercase">Select New Date & Time</h4>
+            <form onSubmit={handleReschedule} className="p-4 rounded bg-blue-50 border border-blue-200 space-y-3">
+              <h4 className="text-xs font-bold text-blue-900 uppercase">Select New Date & Time</h4>
               {rescheduleError && (
-                <p className="text-rose-500 text-xs">{rescheduleError}</p>
+                <p className="text-red-600 text-xs">{rescheduleError}</p>
               )}
               <input
                 type="datetime-local"
                 value={newDate}
                 onChange={(e) => setNewDate(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none focus:border-blue-600 bg-white"
+                className="w-full px-3 py-2 rounded border border-gray-300 text-xs focus:outline-none focus:border-blue-600 bg-white"
               />
               <button
                 type="submit"
                 disabled={rescheduleLoading}
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold transition"
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-medium"
               >
                 {rescheduleLoading ? "Rescheduling..." : "Confirm New Date"}
               </button>
@@ -273,19 +272,19 @@ export default function AppointmentDetailPage() {
 
           {/* Cancel Box */}
           {isCancelling && (
-            <form onSubmit={handleCancel} className="p-5 rounded-2xl bg-rose-50/50 border border-rose-200 space-y-3">
-              <h4 className="text-xs font-bold text-rose-950 uppercase">Reason for Cancellation</h4>
+            <form onSubmit={handleCancel} className="p-4 rounded bg-red-50 border border-red-200 space-y-3">
+              <h4 className="text-xs font-bold text-red-900 uppercase">Reason for Cancellation</h4>
               <input
                 type="text"
                 placeholder="e.g. Work conflict or feeling better..."
                 value={cancelReason}
                 onChange={(e) => setCancelReason(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none focus:border-rose-600 bg-white"
+                className="w-full px-3 py-2 rounded border border-gray-300 text-xs focus:outline-none focus:border-red-600 bg-white"
               />
               <button
                 type="submit"
                 disabled={cancelLoading}
-                className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-semibold transition"
+                className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded text-xs font-medium"
               >
                 {cancelLoading ? "Cancelling..." : "Confirm Cancellation"}
               </button>

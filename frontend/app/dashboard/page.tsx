@@ -60,70 +60,68 @@ export default function DashboardPage() {
 
       <main className="flex-1 p-4 sm:p-6 lg:p-8 space-y-6">
         {/* Welcome Header */}
-        <div className="bg-gradient-to-r from-blue-700 via-blue-600 to-cyan-600 rounded-3xl p-6 sm:p-8 text-white shadow-md relative overflow-hidden">
-          <div className="relative z-10">
-            <span className="inline-block text-xs font-semibold px-2.5 py-1 rounded-full bg-white/20 backdrop-blur-sm mb-3">
-              Patient Portal Dashboard
-            </span>
-            <h1 className="text-2xl sm:text-3xl font-extrabold">Welcome back, {userName}! 👋</h1>
-            <p className="mt-2 text-blue-100 text-xs sm:text-sm max-w-xl">
-              Track your upcoming medical appointments, consult specialist doctors, and review your hospital diagnoses and prescriptions anytime.
-            </p>
-            <div className="mt-5 flex flex-wrap gap-3">
-              <Link
-                href="/appointments/book"
-                className="px-4 py-2 bg-white text-blue-700 text-xs sm:text-sm font-bold rounded-xl shadow hover:bg-blue-50 transition"
-              >
-                + Book New Appointment
-              </Link>
-              <Link
-                href="/doctors"
-                className="px-4 py-2 bg-blue-800/60 hover:bg-blue-800 text-white text-xs sm:text-sm font-medium rounded-xl border border-white/20 transition"
-              >
-                Find Specialist
-              </Link>
-            </div>
+        <div className="bg-blue-600 rounded p-6 text-white">
+          <p className="text-xs font-medium text-blue-200 uppercase tracking-wide">
+            Patient Portal Dashboard
+          </p>
+          <h1 className="text-2xl font-bold mt-1">Welcome back, {userName}!</h1>
+          <p className="mt-1 text-blue-100 text-sm max-w-xl">
+            Track your upcoming medical appointments, consult doctors, and review your diagnoses and prescriptions.
+          </p>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <Link
+              href="/appointments/book"
+              className="px-4 py-2 bg-white text-blue-600 text-sm font-medium rounded hover:bg-blue-50"
+            >
+              + Book New Appointment
+            </Link>
+            <Link
+              href="/doctors"
+              className="px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white text-sm font-medium rounded border border-blue-500"
+            >
+              Find Specialist
+            </Link>
           </div>
         </div>
 
         {/* Quick Stats Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
-            <p className="text-xs text-slate-400 font-medium">Total Appointments</p>
-            <p className="text-2xl font-bold text-slate-900 mt-1">{appointments.length}</p>
+          <div className="bg-white p-4 rounded border border-gray-200">
+            <p className="text-xs text-gray-500 font-medium">Total Appointments</p>
+            <p className="text-2xl font-bold text-gray-900 mt-1">{appointments.length}</p>
           </div>
-          <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
-            <p className="text-xs text-amber-600 font-medium">Pending Visits</p>
-            <p className="text-2xl font-bold text-amber-600 mt-1">
+          <div className="bg-white p-4 rounded border border-gray-200">
+            <p className="text-xs text-yellow-600 font-medium">Pending Visits</p>
+            <p className="text-2xl font-bold text-yellow-600 mt-1">
               {appointments.filter((a) => a.status.toLowerCase() === "pending").length}
             </p>
           </div>
-          <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+          <div className="bg-white p-4 rounded border border-gray-200">
             <p className="text-xs text-blue-600 font-medium">Confirmed Visits</p>
             <p className="text-2xl font-bold text-blue-600 mt-1">
               {appointments.filter((a) => a.status.toLowerCase() === "confirmed").length}
             </p>
           </div>
-          <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
-            <p className="text-xs text-emerald-600 font-medium">Medical Records</p>
-            <p className="text-2xl font-bold text-emerald-600 mt-1">{records.length}</p>
+          <div className="bg-white p-4 rounded border border-gray-200">
+            <p className="text-xs text-green-600 font-medium">Medical Records</p>
+            <p className="text-2xl font-bold text-green-600 mt-1">{records.length}</p>
           </div>
         </div>
 
         {/* Upcoming Appointments Section */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-bold text-slate-900">Upcoming Appointments</h2>
+            <h2 className="text-base font-bold text-gray-900">Upcoming Appointments</h2>
             <Link
               href="/appointments"
-              className="text-xs font-semibold text-blue-600 hover:text-blue-800"
+              className="text-xs font-medium text-blue-600 hover:text-blue-800"
             >
               View All ({appointments.length}) &rarr;
             </Link>
           </div>
 
           {loading ? (
-            <div className="p-8 text-center bg-white rounded-2xl border border-slate-200 text-slate-400 text-xs">
+            <div className="p-8 text-center bg-white rounded border border-gray-200 text-gray-400 text-xs">
               Loading your appointments...
             </div>
           ) : upcomingAppointments.length > 0 ? (
@@ -133,14 +131,14 @@ export default function DashboardPage() {
               ))}
             </div>
           ) : (
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 text-center space-y-2">
-              <p className="text-sm font-semibold text-slate-700">No active appointments</p>
-              <p className="text-xs text-slate-400">
+            <div className="bg-white p-6 rounded border border-gray-200 text-center space-y-2">
+              <p className="text-sm font-medium text-gray-700">No active appointments</p>
+              <p className="text-xs text-gray-500">
                 You do not have any pending or confirmed appointments at the moment.
               </p>
               <Link
                 href="/appointments/book"
-                className="inline-block mt-2 text-xs font-semibold text-blue-600 hover:underline"
+                className="inline-block mt-2 text-xs font-medium text-blue-600 hover:underline"
               >
                 Schedule your first visit
               </Link>
@@ -151,17 +149,17 @@ export default function DashboardPage() {
         {/* Recent Medical Records Section */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-bold text-slate-900">Recent Medical Records & Prescriptions</h2>
+            <h2 className="text-base font-bold text-gray-900">Recent Medical Records & Prescriptions</h2>
             <Link
               href="/medical-records"
-              className="text-xs font-semibold text-blue-600 hover:text-blue-800"
+              className="text-xs font-medium text-blue-600 hover:text-blue-800"
             >
               View All Records &rarr;
             </Link>
           </div>
 
           {loading ? (
-            <div className="p-8 text-center bg-white rounded-2xl border border-slate-200 text-slate-400 text-xs">
+            <div className="p-8 text-center bg-white rounded border border-gray-200 text-gray-400 text-xs">
               Loading medical records...
             </div>
           ) : recentRecords.length > 0 ? (
@@ -171,10 +169,10 @@ export default function DashboardPage() {
               ))}
             </div>
           ) : (
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 text-center space-y-2">
-              <p className="text-sm font-semibold text-slate-700">No medical records found</p>
-              <p className="text-xs text-slate-400">
-                Doctor consultation notes and digital prescriptions will appear here once you complete a visit.
+            <div className="bg-white p-6 rounded border border-gray-200 text-center space-y-2">
+              <p className="text-sm font-medium text-gray-700">No medical records found</p>
+              <p className="text-xs text-gray-500">
+                Doctor consultation notes and prescriptions will appear here once you complete a visit.
               </p>
             </div>
           )}

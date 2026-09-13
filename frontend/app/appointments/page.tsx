@@ -65,15 +65,15 @@ export default function AppointmentsPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">My Appointments</h1>
-            <p className="text-xs text-slate-500 mt-1">
+            <h1 className="text-2xl font-bold text-gray-900">My Appointments</h1>
+            <p className="text-xs text-gray-500 mt-1">
               Track pending requests, confirmed visits, and past consultations
             </p>
           </div>
 
           <Link
             href="/appointments/book"
-            className="self-start sm:self-auto px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold rounded-xl shadow-sm transition-all"
+            className="self-start sm:self-auto px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded"
           >
             + Book Appointment
           </Link>
@@ -81,10 +81,10 @@ export default function AppointmentsPage() {
 
         {actionMessage && (
           <div
-            className={`p-3.5 rounded-xl text-xs flex items-center gap-2 border ${
+            className={`p-3 rounded text-xs flex items-center gap-2 border ${
               actionMessage.type === "success"
-                ? "bg-emerald-50 border-emerald-200 text-emerald-700"
-                : "bg-rose-50 border-rose-200 text-rose-700"
+                ? "bg-green-50 border-green-200 text-green-700"
+                : "bg-red-50 border-red-200 text-red-700"
             }`}
           >
             <span>{actionMessage.type === "success" ? "✅" : "⚠️"}</span>
@@ -92,16 +92,16 @@ export default function AppointmentsPage() {
           </div>
         )}
 
-        {/* Filter Pills */}
+        {/* Filter Buttons */}
         <div className="flex flex-wrap gap-2 pt-1">
           {["all", "pending", "confirmed", "completed", "cancelled"].map((status) => (
             <button
               key={status}
               onClick={() => setFilterStatus(status)}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold capitalize transition-all ${
+              className={`px-3 py-1.5 rounded text-xs font-medium capitalize ${
                 filterStatus === status
-                  ? "bg-slate-900 text-white shadow-sm"
-                  : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
+                  ? "bg-blue-600 text-white"
+                  : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-300"
               }`}
             >
               {status === "all" ? `All (${appointments.length})` : status}
@@ -111,7 +111,7 @@ export default function AppointmentsPage() {
 
         {/* Content */}
         {loading ? (
-          <div className="p-12 text-center bg-white rounded-3xl border border-slate-200 text-slate-400 text-xs">
+          <div className="p-8 text-center bg-white rounded border border-gray-200 text-gray-400 text-xs">
             Loading your appointments...
           </div>
         ) : filteredAppointments.length > 0 ? (
@@ -125,16 +125,16 @@ export default function AppointmentsPage() {
             ))}
           </div>
         ) : (
-          <div className="bg-white p-12 text-center rounded-3xl border border-slate-200 space-y-3">
-            <p className="text-base font-bold text-slate-800">No appointments found</p>
-            <p className="text-xs text-slate-500 max-w-sm mx-auto">
+          <div className="bg-white p-8 text-center rounded border border-gray-200 space-y-2">
+            <p className="text-base font-bold text-gray-800">No appointments found</p>
+            <p className="text-xs text-gray-500 max-w-sm mx-auto">
               {filterStatus === "all"
                 ? "You haven't scheduled any doctor appointments yet."
                 : `No appointments currently marked as ${filterStatus}.`}
             </p>
             <Link
               href="/appointments/book"
-              className="inline-block mt-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-xl transition shadow-sm"
+              className="inline-block mt-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded"
             >
               Book an Appointment Now
             </Link>

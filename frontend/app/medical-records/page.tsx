@@ -47,26 +47,26 @@ export default function MedicalRecordsPage() {
 
       <main className="flex-1 p-4 sm:p-6 lg:p-8 space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Medical Records & Prescriptions</h1>
-          <p className="text-xs text-slate-500 mt-1">
+          <h1 className="text-2xl font-bold text-gray-900">Medical Records & Prescriptions</h1>
+          <p className="text-xs text-gray-500 mt-1">
             Access your consultation clinical diagnoses, prescribed medications, and lab reports
           </p>
         </div>
 
         {/* Search filter */}
-        <div className="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-3">
-          <span className="text-slate-400 pl-2 text-sm">🔍</span>
+        <div className="bg-white p-3 rounded border border-gray-300 flex items-center gap-3">
+          <span className="text-gray-400 pl-2 text-sm">🔍</span>
           <input
             type="text"
             placeholder="Search by diagnosis (e.g. Bronchitis) or doctor name..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="flex-1 text-xs sm:text-sm focus:outline-none"
+            className="flex-1 text-sm focus:outline-none"
           />
           {search && (
             <button
               onClick={() => setSearch("")}
-              className="text-xs text-slate-400 hover:text-slate-600 pr-2"
+              className="text-xs text-gray-500 hover:text-gray-700 pr-2"
             >
               Clear
             </button>
@@ -75,7 +75,7 @@ export default function MedicalRecordsPage() {
 
         {/* Grid or Empty */}
         {loading ? (
-          <div className="p-12 text-center bg-white rounded-3xl border border-slate-200 text-slate-400 text-xs">
+          <div className="p-8 text-center bg-white rounded border border-gray-200 text-gray-400 text-xs">
             Loading your medical records...
           </div>
         ) : filteredRecords.length > 0 ? (
@@ -85,9 +85,9 @@ export default function MedicalRecordsPage() {
             ))}
           </div>
         ) : (
-          <div className="bg-white p-12 text-center rounded-3xl border border-slate-200 space-y-2">
-            <p className="text-base font-bold text-slate-800">No medical records found</p>
-            <p className="text-xs text-slate-400 max-w-sm mx-auto">
+          <div className="bg-white p-8 text-center rounded border border-gray-200 space-y-2">
+            <p className="text-base font-bold text-gray-800">No medical records found</p>
+            <p className="text-xs text-gray-500 max-w-sm mx-auto">
               {search
                 ? "No clinical records matched your search query."
                 : "Your official doctor prescriptions and diagnostic findings will appear here following completed hospital appointments."}

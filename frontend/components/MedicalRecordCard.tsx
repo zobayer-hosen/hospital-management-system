@@ -24,41 +24,41 @@ export default function MedicalRecordCard({ record }: { record: MedicalRecord })
     : "Recent";
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm hover:shadow transition-shadow flex flex-col justify-between">
+    <div className="bg-white rounded border border-gray-200 p-4 flex flex-col justify-between">
       <div>
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-2">
-            <span className="p-2 rounded-xl bg-emerald-50 text-emerald-600 text-lg">📄</span>
+            <span className="p-2 rounded bg-blue-50 text-blue-600 text-base">📄</span>
             <div>
-              <p className="text-xs text-slate-400 font-medium">{formattedDate}</p>
-              <h4 className="text-base font-bold text-slate-900 mt-0.5">{record.diagnosis}</h4>
+              <p className="text-xs text-gray-400 font-medium">{formattedDate}</p>
+              <h4 className="text-base font-bold text-gray-900 mt-0.5">{record.diagnosis}</h4>
             </div>
           </div>
-          <span className="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">
+          <span className="text-xs font-medium text-gray-600 bg-gray-100 px-2 py-0.5 rounded">
             {record.doctor?.specialization || "Clinical"}
           </span>
         </div>
 
-        <p className="mt-3 text-xs text-slate-600">
-          <span className="font-semibold text-slate-700">Attending Physician: </span>
+        <p className="mt-3 text-xs text-gray-600">
+          <span className="font-semibold text-gray-700">Attending Physician: </span>
           {doctorName}
         </p>
 
         {record.prescription && (
-          <div className="mt-3 p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs text-slate-700">
-            <p className="font-semibold text-slate-800 mb-1">Prescription Summary:</p>
-            <p className="line-clamp-2 whitespace-pre-line text-slate-600 font-mono text-[11px]">
+          <div className="mt-3 p-2.5 rounded bg-gray-50 border border-gray-200 text-xs text-gray-700">
+            <p className="font-semibold text-gray-800 mb-1">Prescription Summary:</p>
+            <p className="line-clamp-2 whitespace-pre-line text-gray-600 font-mono text-xs">
               {record.prescription}
             </p>
           </div>
         )}
       </div>
 
-      <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
-        <span className="text-xs text-slate-400">Verified Record</span>
+      <div className="mt-4 pt-3 border-t border-gray-200 flex items-center justify-between">
+        <span className="text-xs text-gray-400">Verified Record</span>
         <Link
           href={`/medical-records/${record.id}`}
-          className="text-xs font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1"
+          className="text-xs font-medium text-blue-600 hover:text-blue-800 flex items-center gap-1"
         >
           View Full Report &rarr;
         </Link>

@@ -22,9 +22,9 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 bg-white border-r border-slate-200 hidden lg:block shrink-0 min-h-[calc(100vh-4rem)] p-4">
+    <aside className="w-64 bg-white border-r border-gray-200 hidden lg:block shrink-0 min-h-[calc(100vh-4rem)] p-4">
       <div className="space-y-1">
-        <p className="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+        <p className="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
           Patient Portal
         </p>
         {navItems.map((item) => {
@@ -37,29 +37,23 @@ export default function Sidebar() {
             <Link
               key={item.name}
               href={item.href}
-              className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all ${
+              className={`flex items-center gap-3 px-3 py-2 rounded text-sm font-medium ${
                 isActive
-                  ? "bg-blue-600 text-white shadow-sm"
-                  : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                  ? "bg-blue-600 text-white"
+                  : "text-gray-700 hover:bg-gray-100"
               }`}
             >
-              <span className="text-base">{item.icon}</span>
+              <span>{item.icon}</span>
               <span>{item.name}</span>
             </Link>
           );
         })}
       </div>
 
-      <div className="mt-8 p-4 rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-100">
-        <div className="flex items-center gap-2 mb-2">
-          <span className="flex h-2 w-2 relative">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-          </span>
-          <p className="text-xs font-semibold text-blue-900">Hospital Hotline</p>
-        </div>
-        <p className="text-xs text-slate-600 mb-2">Need immediate emergency support?</p>
-        <p className="text-sm font-bold text-blue-700">📞 +880 9612-000000</p>
+      <div className="mt-8 p-3 rounded bg-gray-50 border border-gray-200">
+        <p className="text-xs font-bold text-gray-800 mb-1">Hospital Hotline</p>
+        <p className="text-xs text-gray-600 mb-2">24/7 Emergency Support</p>
+        <p className="text-sm font-bold text-blue-600">📞 +880 9612-000000</p>
       </div>
     </aside>
   );

@@ -39,7 +39,7 @@ export default function DoctorDetailPage() {
 
   if (loading) {
     return (
-      <div className="max-w-4xl mx-auto p-8 text-center text-xs text-slate-400">
+      <div className="max-w-4xl mx-auto p-8 text-center text-xs text-gray-400">
         Loading doctor profile...
       </div>
     );
@@ -48,7 +48,7 @@ export default function DoctorDetailPage() {
   if (error || !doctor) {
     return (
       <div className="max-w-4xl mx-auto p-8 text-center space-y-3">
-        <p className="text-sm font-bold text-slate-700">{error || "Doctor not found"}</p>
+        <p className="text-sm font-bold text-gray-700">{error || "Doctor not found"}</p>
         <Link href="/doctors" className="text-xs text-blue-600 underline">
           &larr; Back to all doctors
         </Link>
@@ -66,65 +66,65 @@ export default function DoctorDetailPage() {
     <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 space-y-6 w-full">
       <Link
         href="/doctors"
-        className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-900 transition-colors"
+        className="inline-flex items-center gap-1.5 text-xs font-medium text-gray-600 hover:text-gray-900"
       >
         &larr; Back to all doctors
       </Link>
 
-      <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-10 shadow-sm space-y-8">
+      <div className="bg-white rounded border border-gray-200 p-6 sm:p-8 space-y-6">
         {/* Profile Card Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 pb-6 border-b border-slate-100">
-          <div className="w-20 h-20 rounded-3xl bg-gradient-to-tr from-cyan-600 to-blue-600 text-white flex items-center justify-center font-bold text-3xl shadow-inner shrink-0">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 pb-6 border-b border-gray-200">
+          <div className="w-16 h-16 rounded bg-blue-600 text-white flex items-center justify-center font-bold text-2xl shrink-0">
             {doctorName.replace("Dr. ", "").charAt(0)}
           </div>
           <div className="flex-1">
-            <span className="inline-block text-xs font-semibold px-2.5 py-0.5 rounded-full bg-cyan-50 text-cyan-700 border border-cyan-200 mb-1">
+            <span className="inline-block text-xs font-medium px-2 py-0.5 rounded bg-blue-50 text-blue-700 mb-1">
               {doctor.specialization || "Physician"}
             </span>
-            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">{doctorName}</h1>
-            <p className="text-sm text-slate-500 mt-1">Department: {departmentName}</p>
+            <h1 className="text-2xl font-bold text-gray-900">{doctorName}</h1>
+            <p className="text-sm text-gray-500 mt-1">Department: {departmentName}</p>
           </div>
           <Link
             href={`/appointments/book?doctorId=${doctor.id}`}
-            className="w-full sm:w-auto text-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-xl shadow-md transition-all"
+            className="w-full sm:w-auto text-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded"
           >
             Book Appointment
           </Link>
         </div>
 
         {/* Detailed Info Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-4">
-            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider text-[11px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <h3 className="text-xs font-bold text-gray-700 uppercase tracking-wider">
               Professional Credentials
             </h3>
-            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 space-y-2">
-              <p className="text-xs text-slate-700">
-                <span className="font-semibold text-slate-900">Degrees & Qualifications: </span>
+            <div className="p-4 rounded bg-gray-50 border border-gray-200 space-y-2 text-xs text-gray-700">
+              <p>
+                <span className="font-semibold text-gray-900">Degrees & Qualifications: </span>
                 {doctor.qualification || "MBBS"}
               </p>
-              <p className="text-xs text-slate-700">
-                <span className="font-semibold text-slate-900">Department: </span>
+              <p>
+                <span className="font-semibold text-gray-900">Department: </span>
                 {departmentName}
               </p>
             </div>
           </div>
 
-          <div className="space-y-4">
-            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider text-[11px]">
+          <div className="space-y-2">
+            <h3 className="text-xs font-bold text-gray-700 uppercase tracking-wider">
               Contact & Hospital Consultation
             </h3>
-            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 space-y-2 text-xs text-slate-700">
+            <div className="p-4 rounded bg-gray-50 border border-gray-200 space-y-2 text-xs text-gray-700">
               <p>
-                <span className="font-semibold text-slate-900">Hospital Email: </span>
+                <span className="font-semibold text-gray-900">Hospital Email: </span>
                 {doctor.user?.email || "doctor@hospital.com"}
               </p>
               <p>
-                <span className="font-semibold text-slate-900">Consultation Days: </span>
+                <span className="font-semibold text-gray-900">Consultation Days: </span>
                 Sunday – Thursday (09:00 AM – 04:00 PM)
               </p>
               <p>
-                <span className="font-semibold text-slate-900">Room / Chamber: </span>
+                <span className="font-semibold text-gray-900">Room / Chamber: </span>
                 Block B, 3rd Floor (Room #304)
               </p>
             </div>
@@ -132,16 +132,16 @@ export default function DoctorDetailPage() {
         </div>
 
         {/* Booking Banner */}
-        <div className="p-6 rounded-2xl bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="p-4 rounded bg-blue-50 border border-blue-200 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
-            <h4 className="text-base font-bold text-blue-950">Schedule a visit with {doctorName}</h4>
-            <p className="text-xs text-slate-600 mt-0.5">
+            <h4 className="text-sm font-bold text-blue-900">Schedule a visit with {doctorName}</h4>
+            <p className="text-xs text-gray-600 mt-0.5">
               Select your preferred date and explain any symptoms in advance.
             </p>
           </div>
           <Link
             href={`/appointments/book?doctorId=${doctor.id}`}
-            className="w-full sm:w-auto text-center px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm rounded-xl transition shadow-sm shrink-0"
+            className="w-full sm:w-auto text-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs sm:text-sm rounded shrink-0"
           >
             Select Date & Time &rarr;
           </Link>

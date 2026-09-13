@@ -94,16 +94,16 @@ function BookAppointmentForm() {
   };
 
   return (
-    <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-10 shadow-sm max-w-2xl">
+    <div className="bg-white rounded border border-gray-200 p-6 sm:p-8 max-w-2xl">
       <div className="mb-6">
-        <h2 className="text-xl font-bold text-slate-900">Schedule Consultation</h2>
-        <p className="text-xs text-slate-500 mt-1">
+        <h2 className="text-xl font-bold text-gray-900">Schedule Consultation</h2>
+        <p className="text-xs text-gray-500 mt-1">
           Provide your symptoms and select your preferred specialist and time slot
         </p>
       </div>
 
       {error && (
-        <div className="mb-5 p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
+        <div className="mb-4 p-3 rounded bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
           <span>⚠️</span>
           <span>{error}</span>
         </div>
@@ -111,13 +111,13 @@ function BookAppointmentForm() {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-xs font-semibold text-slate-700 mb-1">
+          <label className="block text-xs font-semibold text-gray-700 mb-1">
             Select Medical Specialist *
           </label>
           <select
             value={formData.doctorId}
             onChange={(e) => setFormData({ ...formData, doctorId: e.target.value })}
-            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-blue-600 bg-white"
+            className="w-full px-3 py-2 rounded border border-gray-300 text-sm focus:outline-none focus:border-blue-600 bg-white"
           >
             <option value="">-- Choose a doctor --</option>
             {doctors.map((doc) => (
@@ -129,22 +129,22 @@ function BookAppointmentForm() {
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-700 mb-1">
+          <label className="block text-xs font-semibold text-gray-700 mb-1">
             Appointment Date & Time *
           </label>
           <input
             type="datetime-local"
             value={formData.appointmentDate}
             onChange={(e) => setFormData({ ...formData, appointmentDate: e.target.value })}
-            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-blue-600"
+            className="w-full px-3 py-2 rounded border border-gray-300 text-sm focus:outline-none focus:border-blue-600"
           />
-          <p className="text-[11px] text-slate-400 mt-1">
+          <p className="text-xs text-gray-400 mt-1">
             Clinic hours are 09:00 AM - 05:00 PM. Please select a future date.
           </p>
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-700 mb-1">
+          <label className="block text-xs font-semibold text-gray-700 mb-1">
             Reason for Visit / Main Symptoms *
           </label>
           <textarea
@@ -152,7 +152,7 @@ function BookAppointmentForm() {
             placeholder="Describe your current symptoms or concerns in detail..."
             value={formData.reason}
             onChange={(e) => setFormData({ ...formData, reason: e.target.value })}
-            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-blue-600"
+            className="w-full px-3 py-2 rounded border border-gray-300 text-sm focus:outline-none focus:border-blue-600"
           />
         </div>
 
@@ -160,13 +160,13 @@ function BookAppointmentForm() {
           <button
             type="submit"
             disabled={loading}
-            className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold text-xs sm:text-sm shadow-sm transition-all flex items-center gap-2"
+            className="px-5 py-2.5 rounded bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-medium text-sm transition-colors"
           >
             {loading ? "Submitting Booking..." : "Confirm & Book Appointment"}
           </button>
           <Link
             href="/appointments"
-            className="px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-100 text-xs sm:text-sm font-medium transition-colors"
+            className="px-4 py-2.5 rounded text-gray-600 hover:bg-gray-100 text-sm font-medium"
           >
             Cancel
           </Link>
@@ -183,11 +183,11 @@ export default function BookAppointmentPage() {
       <main className="flex-1 p-4 sm:p-6 lg:p-8 space-y-6">
         <Link
           href="/appointments"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-900 transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-medium text-gray-600 hover:text-gray-900"
         >
           &larr; Back to Appointments
         </Link>
-        <Suspense fallback={<div className="p-8 text-center text-xs text-slate-400">Loading form...</div>}>
+        <Suspense fallback={<div className="p-8 text-center text-xs text-gray-400">Loading form...</div>}>
           <BookAppointmentForm />
         </Suspense>
       </main>
