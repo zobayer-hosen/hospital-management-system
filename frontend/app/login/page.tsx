@@ -1,68 +1,65 @@
 "use client";
 
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { z } from "zod";
 import api from "@/lib/axios";
+
+// Zod schema from lecture reference
+const loginSchema = z.object({
+  email: z
+    .string()
+    .min(1, "Email is required")
+    .email("Invalid email address"),
+  password: z
+    .string()
+    .min(1, "Password is required")
+    .min(6, "Password must be at least 6 characters"),
+});
+
+type LoginData = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
   const router = useRouter();
 
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
-  const [serverError, setServerError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-
-  const validate = () => {
-    const errs: { email?: string; password?: string } = {};
-
-    if (!formData.email.trim()) {
-      errs.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      errs.email = "Please enter a valid email address";
-    }
-
-    if (!formData.password) {
-      errs.password = "Password is required";
-    } else if (formData.password.length < 6) {
-      errs.password = "Password must be at least 6 characters long";
-    }
-
-    setErrors(errs);
-    return Object.keys(errs).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    setServerError(null);
+    setError("");
 
-    if (!validate()) return;
+    // Validate with Zod
+    const result = loginSchema.safeParse({ email, password });
+
+    if (!result.success) {
+      setError(result.error.errors[0].message);
+      return;
+    }
 
     setLoading(true);
     try {
-      const res = await api.post("/patient/auth/login", {
-        email: formData.email.trim(),
-        password: formData.password,
-      });
+      // Axios POST request
+      const response = await api.post("/patient/auth/login", result.data);
+      const data = response.data;
 
-      if (res.data?.accessToken) {
-        localStorage.setItem("token", res.data.accessToken);
-        if (res.data.user) {
-          localStorage.setItem("user", JSON.stringify(res.data.user));
+      if (data?.accessToken) {
+        localStorage.setItem("token", data.accessToken);
+        if (data.user) {
+          localStorage.setItem("user", JSON.stringify(data.user));
         }
         router.push("/dashboard");
       } else {
-        setServerError("Login successful, but no authorization token received.");
+        setError("Login failed. No access token returned.");
       }
     } catch (err: any) {
-      const message =
+      const msg =
         err.response?.data?.message ||
-        "Invalid credentials or server connection failed. Please try again.";
-      setServerError(typeof message === "string" ? message : JSON.stringify(message));
+        "Invalid email or password. Please try again.";
+      setError(typeof msg === "string" ? msg : JSON.stringify(msg));
     } finally {
       setLoading(false);
     }
@@ -79,10 +76,10 @@ export default function LoginPage() {
           <p className="text-xs text-slate-500 mt-1">Access your doctor visits, appointments & records</p>
         </div>
 
-        {serverError && (
+        {error && (
           <div className="mb-5 p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
             <span>⚠️</span>
-            <span>{serverError}</span>
+            <span>{error}</span>
           </div>
         )}
 
@@ -94,15 +91,10 @@ export default function LoginPage() {
             <input
               type="email"
               placeholder="e.g. rahim@example.com"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className={`w-full px-3.5 py-2.5 rounded-xl border text-sm focus:outline-none transition-colors ${
-                errors.email
-                  ? "border-rose-400 bg-rose-50/30 focus:border-rose-500"
-                  : "border-slate-300 focus:border-blue-600"
-              }`}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-blue-600"
             />
-            {errors.email && <p className="text-rose-500 text-xs mt-1">{errors.email}</p>}
           </div>
 
           <div>
@@ -112,15 +104,10 @@ export default function LoginPage() {
             <input
               type="password"
               placeholder="••••••••"
-              value={formData.password}
-              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              className={`w-full px-3.5 py-2.5 rounded-xl border text-sm focus:outline-none transition-colors ${
-                errors.password
-                  ? "border-rose-400 bg-rose-50/30 focus:border-rose-500"
-                  : "border-slate-300 focus:border-blue-600"
-              }`}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-blue-600"
             />
-            {errors.password && <p className="text-rose-500 text-xs mt-1">{errors.password}</p>}
           </div>
 
           <button

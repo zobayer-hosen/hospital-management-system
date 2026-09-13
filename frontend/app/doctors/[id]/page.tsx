@@ -1,55 +1,59 @@
-import { notFound } from "next/navigation";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import Link from "next/link";
+import axios from "axios";
 import { Doctor } from "@/components/DoctorCard";
 
-async function getDoctor(id: string): Promise<Doctor | null> {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
-  try {
-    const res = await fetch(`${baseUrl}/patient/doctors/${id}`, {
-      cache: "no-store",
-    });
-    if (!res.ok) {
-      if (res.status === 404) return null;
-      // Fallback mock if demo doctor id
-      return {
-        id,
-        specialization: "Senior Consultant",
-        qualification: "MBBS, FCPS, FRCP (UK)",
-        department: "General Medicine",
-        user: {
-          name: "Dr. Consultant Specialist",
-          email: "specialist@carepoint.com",
-          phone: "+8801799999999",
-        },
-      };
+export default function DoctorDetailPage() {
+  const params = useParams();
+  const id = params?.id as string;
+
+  const [doctor, setDoctor] = useState<Doctor | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!id) return;
+
+    async function fetchDoctor() {
+      try {
+        const endpoint =
+          process.env.NEXT_PUBLIC_API_ENDPOINT ||
+          process.env.NEXT_PUBLIC_API_URL ||
+          "http://localhost:3000";
+
+        const response = await axios.get(`${endpoint}/patient/doctors/${id}`);
+        setDoctor(response.data);
+      } catch (err: any) {
+        console.error("Failed to load doctor:", err);
+        setError("Doctor not found or server unavailable.");
+      } finally {
+        setLoading(false);
+      }
     }
-    return await res.json();
-  } catch (error) {
-    // Fallback for offline SSR testing
-    return {
-      id,
-      specialization: "Senior Consultant",
-      qualification: "MBBS, FCPS, FRCP (UK)",
-      department: "Internal Medicine",
-      user: {
-        name: "Dr. Consultant Specialist",
-        email: "specialist@carepoint.com",
-        phone: "+8801799999999",
-      },
-    };
+
+    fetchDoctor();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="max-w-4xl mx-auto p-8 text-center text-xs text-slate-400">
+        Loading doctor profile...
+      </div>
+    );
   }
-}
 
-export default async function DoctorDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
-  const doctor = await getDoctor(id);
-
-  if (!doctor) {
-    notFound();
+  if (error || !doctor) {
+    return (
+      <div className="max-w-4xl mx-auto p-8 text-center space-y-3">
+        <p className="text-sm font-bold text-slate-700">{error || "Doctor not found"}</p>
+        <Link href="/doctors" className="text-xs text-blue-600 underline">
+          &larr; Back to all doctors
+        </Link>
+      </div>
+    );
   }
 
   const doctorName = doctor.user?.name || "Dr. Specialist";

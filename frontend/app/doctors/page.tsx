@@ -1,62 +1,48 @@
-import DoctorCard, { Doctor } from "@/components/DoctorCard";
+"use client";
+
+import { useState, useEffect, FormEvent } from "react";
+import axios from "axios";
 import Link from "next/link";
+import DoctorCard, { Doctor } from "@/components/DoctorCard";
 
-async function getDoctors(): Promise<Doctor[]> {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
-  try {
-    const res = await fetch(`${baseUrl}/patient/doctors`, {
-      cache: "no-store",
-    });
-    if (!res.ok) return [];
-    const data = await res.json();
-    return Array.isArray(data) ? data : [];
-  } catch (error) {
-    // Graceful fallback for SSR when backend is offline
-    return [
-      {
-        id: "d1",
-        specialization: "Cardiologist",
-        qualification: "MBBS, FCPS (Cardiology)",
-        department: "Cardiology",
-        user: { name: "Dr. Mahmud Hasan", email: "dr.mahmud@hospital.com", phone: "+8801711111111" },
-      },
-      {
-        id: "d2",
-        specialization: "Neurologist",
-        qualification: "MBBS, MD (Neurology)",
-        department: "Neurology",
-        user: { name: "Dr. Farzana Rahman", email: "dr.farzana@hospital.com", phone: "+8801722222222" },
-      },
-      {
-        id: "d3",
-        specialization: "Pediatrician",
-        qualification: "MBBS, DCH, MRCPCH",
-        department: "Pediatrics",
-        user: { name: "Dr. Tariqul Islam", email: "dr.tariqul@hospital.com", phone: "+8801733333333" },
-      },
-    ];
+export default function DoctorsPage() {
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [search, setSearch] = useState<string>("");
+  const [department, setDepartment] = useState<string>("");
+
+  useEffect(() => {
+    fetchDoctors();
+  }, []);
+
+  async function fetchDoctors(searchQuery = "", deptFilter = "") {
+    setLoading(true);
+    try {
+      const endpoint =
+        process.env.NEXT_PUBLIC_API_ENDPOINT ||
+        process.env.NEXT_PUBLIC_API_URL ||
+        "http://localhost:3000";
+
+      let url = endpoint + "/patient/doctors";
+      const params: string[] = [];
+      if (searchQuery) params.push(`search=${encodeURIComponent(searchQuery)}`);
+      if (deptFilter) params.push(`department=${encodeURIComponent(deptFilter)}`);
+      if (params.length > 0) url += "?" + params.join("&");
+
+      const response = await axios.get(url);
+      const jsonData = response.data;
+      setDoctors(Array.isArray(jsonData) ? jsonData : []);
+    } catch (error) {
+      console.error("Failed to fetch doctors:", error);
+    } finally {
+      setLoading(false);
+    }
   }
-}
 
-export default async function DoctorsPage({
-  searchParams,
-}: {
-  searchParams?: Promise<{ department?: string; search?: string }>;
-}) {
-  const resolvedParams = searchParams ? await searchParams : {};
-  const allDoctors = await getDoctors();
-
-  const searchQuery = resolvedParams.search?.toLowerCase() || "";
-  const selectedDept = resolvedParams.department?.toLowerCase() || "";
-
-  const doctors = allDoctors.filter((doc) => {
-    const nameMatch = !searchQuery || (doc.user?.name && doc.user.name.toLowerCase().includes(searchQuery));
-    const specMatch = !searchQuery || (doc.specialization && doc.specialization.toLowerCase().includes(searchQuery));
-    const deptName = typeof doc.department === "string" ? doc.department : doc.department?.name || "";
-    const deptMatch = !selectedDept || deptName.toLowerCase().includes(selectedDept);
-
-    return (nameMatch || specMatch) && deptMatch;
-  });
+  const handleFilter = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    fetchDoctors(search, department);
+  };
 
   return (
     <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 space-y-6 w-full">
@@ -79,18 +65,18 @@ export default async function DoctorsPage({
 
       {/* Filter / Search Bar */}
       <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row gap-3">
-        <form method="GET" className="flex-1 flex flex-col sm:flex-row gap-3">
+        <form onSubmit={handleFilter} className="flex-1 flex flex-col sm:flex-row gap-3">
           <input
             type="text"
-            name="search"
-            defaultValue={resolvedParams.search || ""}
-            placeholder="Search by doctor name or specialization (e.g. Cardiologist)..."
+            placeholder="Search by doctor name or specialization..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             className="flex-1 px-4 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:outline-none focus:border-blue-600"
           />
 
           <select
-            name="department"
-            defaultValue={resolvedParams.department || ""}
+            value={department}
+            onChange={(e) => setDepartment(e.target.value)}
             className="px-4 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:outline-none focus:border-blue-600 bg-white"
           >
             <option value="">All Departments</option>
@@ -111,7 +97,11 @@ export default async function DoctorsPage({
       </div>
 
       {/* Doctors Grid */}
-      {doctors.length > 0 ? (
+      {loading ? (
+        <div className="bg-white p-12 text-center rounded-3xl border border-slate-200 text-xs text-slate-400">
+          Loading doctors directory...
+        </div>
+      ) : doctors.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {doctors.map((doctor) => (
             <DoctorCard key={doctor.id} doctor={doctor} />

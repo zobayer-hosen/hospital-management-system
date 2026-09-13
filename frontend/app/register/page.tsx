@@ -1,9 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { z } from "zod";
 import api from "@/lib/axios";
+
+// Zod schema for registration
+const registerSchema = z.object({
+  name: z.string().min(1, "Full name is required"),
+  email: z
+    .string()
+    .min(1, "Email address is required")
+    .email("Please provide a valid email address"),
+  password: z
+    .string()
+    .min(1, "Password is required")
+    .min(6, "Password must be at least 6 characters"),
+  phone: z.string().optional(),
+  dateOfBirth: z.string().optional(),
+  gender: z.string().optional(),
+  bloodGroup: z.string().optional(),
+  address: z.string().optional(),
+});
+
+type RegisterData = z.infer<typeof registerSchema>;
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -19,48 +40,27 @@ export default function RegisterPage() {
     address: "",
   });
 
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [serverError, setServerError] = useState<string | null>(null);
+  const [error, setError] = useState<string>("");
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const validate = () => {
-    const errs: Record<string, string> = {};
-
-    if (!formData.name.trim()) {
-      errs.name = "Full name is required";
-    }
-
-    if (!formData.email.trim()) {
-      errs.email = "Email address is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      errs.email = "Please provide a valid email address";
-    }
-
-    if (!formData.password) {
-      errs.password = "Password is required";
-    } else if (formData.password.length < 6) {
-      errs.password = "Password must be at least 6 characters";
-    }
-
-    if (formData.phone && !/^\+?[0-9\s-]{8,15}$/.test(formData.phone.trim())) {
-      errs.phone = "Please enter a valid phone number";
-    }
-
-    setErrors(errs);
-    return Object.keys(errs).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    setServerError(null);
+    setError("");
     setSuccessMessage(null);
 
-    if (!validate()) return;
+    // Zod validation
+    const result = registerSchema.safeParse(formData);
+
+    if (!result.success) {
+      setError(result.error.errors[0].message);
+      return;
+    }
 
     setLoading(true);
     try {
-      await api.post("/patient/auth/register", {
+      // Axios POST request
+      const response = await api.post("/patient/auth/register", {
         name: formData.name.trim(),
         email: formData.email.trim(),
         password: formData.password,
@@ -71,7 +71,8 @@ export default function RegisterPage() {
         address: formData.address.trim() || undefined,
       });
 
-      setSuccessMessage("Account created successfully! Redirecting to login...");
+      const data = response.data;
+      setSuccessMessage(data?.message || "Account created successfully! Redirecting to login...");
       setTimeout(() => {
         router.push("/login");
       }, 1500);
@@ -79,7 +80,7 @@ export default function RegisterPage() {
       const msg =
         err.response?.data?.message ||
         "Registration failed. Email might already be registered.";
-      setServerError(typeof msg === "string" ? msg : JSON.stringify(msg));
+      setError(typeof msg === "string" ? msg : JSON.stringify(msg));
     } finally {
       setLoading(false);
     }
@@ -96,10 +97,10 @@ export default function RegisterPage() {
           <p className="text-xs text-slate-500 mt-1">Create your hospital medical profile and account</p>
         </div>
 
-        {serverError && (
+        {error && (
           <div className="mb-5 p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
             <span>⚠️</span>
-            <span>{serverError}</span>
+            <span>{error}</span>
           </div>
         )}
 
@@ -121,13 +122,8 @@ export default function RegisterPage() {
                 placeholder="e.g. Rahim Ahmed"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className={`w-full px-3.5 py-2.5 rounded-xl border text-sm focus:outline-none transition-colors ${
-                  errors.name
-                    ? "border-rose-400 bg-rose-50/30 focus:border-rose-500"
-                    : "border-slate-300 focus:border-blue-600"
-                }`}
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-blue-600"
               />
-              {errors.name && <p className="text-rose-500 text-xs mt-1">{errors.name}</p>}
             </div>
 
             <div>
@@ -139,13 +135,8 @@ export default function RegisterPage() {
                 placeholder="rahim@example.com"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className={`w-full px-3.5 py-2.5 rounded-xl border text-sm focus:outline-none transition-colors ${
-                  errors.email
-                    ? "border-rose-400 bg-rose-50/30 focus:border-rose-500"
-                    : "border-slate-300 focus:border-blue-600"
-                }`}
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-blue-600"
               />
-              {errors.email && <p className="text-rose-500 text-xs mt-1">{errors.email}</p>}
             </div>
           </div>
 
@@ -159,13 +150,8 @@ export default function RegisterPage() {
                 placeholder="Min. 6 characters"
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                className={`w-full px-3.5 py-2.5 rounded-xl border text-sm focus:outline-none transition-colors ${
-                  errors.password
-                    ? "border-rose-400 bg-rose-50/30 focus:border-rose-500"
-                    : "border-slate-300 focus:border-blue-600"
-                }`}
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-blue-600"
               />
-              {errors.password && <p className="text-rose-500 text-xs mt-1">{errors.password}</p>}
             </div>
 
             <div>
@@ -177,13 +163,8 @@ export default function RegisterPage() {
                 placeholder="+8801700000000"
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className={`w-full px-3.5 py-2.5 rounded-xl border text-sm focus:outline-none transition-colors ${
-                  errors.phone
-                    ? "border-rose-400 bg-rose-50/30 focus:border-rose-500"
-                    : "border-slate-300 focus:border-blue-600"
-                }`}
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-blue-600"
               />
-              {errors.phone && <p className="text-rose-500 text-xs mt-1">{errors.phone}</p>}
             </div>
           </div>
 

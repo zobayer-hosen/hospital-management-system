@@ -1,9 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import { z } from "zod";
 import api from "@/lib/axios";
 import Sidebar from "@/components/Sidebar";
+
+// Zod schema for profile update
+const profileSchema = z.object({
+  phone: z.string().optional(),
+  dateOfBirth: z.string().optional(),
+  gender: z.string().optional(),
+  bloodGroup: z.string().optional(),
+  address: z.string().optional(),
+});
+
+type ProfileData = z.infer<typeof profileSchema>;
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -60,10 +72,17 @@ export default function ProfilePage() {
       .finally(() => setLoading(false));
   }, [router]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setErrorMsg(null);
     setSuccessMsg(null);
+
+    const result = profileSchema.safeParse(formData);
+    if (!result.success) {
+      setErrorMsg(result.error.errors[0].message);
+      return;
+    }
+
     setUpdating(true);
 
     try {

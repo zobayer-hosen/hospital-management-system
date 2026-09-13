@@ -1,19 +1,15 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import api from "@/lib/axios";
 import Sidebar from "@/components/Sidebar";
 import { Appointment } from "@/components/AppointmentCard";
 
-export default function AppointmentDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const resolvedParams = use(params);
-  const id = resolvedParams.id;
+export default function AppointmentDetailPage() {
+  const params = useParams();
+  const id = params?.id as string;
   const router = useRouter();
 
   const [appointment, setAppointment] = useState<Appointment | null>(null);
